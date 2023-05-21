@@ -7,6 +7,7 @@ sql3::sql3(const string _path, bool _keepOpen) {
    if (keepOpen) {
       if (open()) {
          printf("[ERROR] Ne mogu otvoriti bazu podataka!");
+         exit(1);
       }
    }
 
@@ -24,6 +25,14 @@ bool sql3::close() {
 }
 
 bool sql3::run(const string sql_command) {
+
+   if (!keepOpen) {
+      if (open()) {
+         printf("[ERROR] Ne mogu otvoriti bazu podataka!");
+         exit(1);
+      }
+   }
+
    bool r = true;
    char *messaggeError;
    uint exec_stuts;
@@ -36,6 +45,12 @@ bool sql3::run(const string sql_command) {
    }
    else  {
       Answer = responseDatabase;
+   }
+
+   if (!keepOpen) {
+      if(close()) {
+         printf ("ERROR Zatvaranja baze podataka!");
+      }
    }
 
    return r;
