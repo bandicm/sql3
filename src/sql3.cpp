@@ -6,8 +6,7 @@ sql3::sql3(const string _path, bool _keepOpen) {
 
    if (keepOpen) {
       if (open()) {
-         printf("[ERROR] Ne mogu otvoriti bazu podataka!");
-         exit(1);
+         throw "[ERROR] Unable to open database ";
       }
    }
 
@@ -28,8 +27,7 @@ bool sql3::run(const string sql_command) {
 
    if (!keepOpen) {
       if (open()) {
-         printf("[ERROR] Ne mogu otvoriti bazu podataka!");
-         exit(1);
+         throw "[ERROR] Unable to open database ";
       }
    }
 
@@ -49,7 +47,7 @@ bool sql3::run(const string sql_command) {
 
    if (!keepOpen) {
       if(close()) {
-         printf ("ERROR Zatvaranja baze podataka!");
+         throw "[ERROR] Unable to close database ";
       }
    }
 
@@ -64,8 +62,8 @@ string sql3::answer() {
 
 string sql3::ask(const string sql_command) {
    if (!run(sql_command)) {
-      printf("[ERROR] Ne mogu čitati bazu podataka!");
-      return {};
+      throw "[ERROR] Unable to read database ";
+      //return {};
    }
    else {
       return answer();
@@ -74,8 +72,8 @@ string sql3::ask(const string sql_command) {
 
 map<string, vector<string>> sql3::query(const string sql_command) {
    if (!run(sql_command)) {
-      printf("[ERROR] Ne mogu čitati bazu podataka!");
-      return {};
+      throw "[ERROR] Unable to read database ";
+      //return {};
    }
    else {
       mapit();
@@ -106,7 +104,7 @@ void sql3::mapit() {
 
 sql3::~sql3() {
    if(close()) {
-      printf ("ERROR Zatvaranja baze podataka!");
+      throw "[ERROR] Unable to close database ";
    }
 }
 
