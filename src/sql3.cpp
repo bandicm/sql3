@@ -6,7 +6,7 @@ sql3::sql3(const string _path, bool _keepOpen) {
 
    if (keepOpen) {
       if (open()) {
-         throw "[ERROR] Unable to open database ";
+         throw string("[ERROR] Unable to open database ");
       }
    }
 
@@ -27,7 +27,7 @@ bool sql3::run(const string sql_command) {
 
    if (!keepOpen) {
       if (open()) {
-         throw "[ERROR] Unable to open database ";
+         throw string("[ERROR] Unable to open database ");
       }
    }
 
@@ -47,7 +47,7 @@ bool sql3::run(const string sql_command) {
 
    if (!keepOpen) {
       if(close()) {
-         throw "[ERROR] Unable to close database ";
+         throw string("[ERROR] Unable to close database ");
       }
    }
 
@@ -62,7 +62,7 @@ string sql3::answer() {
 
 string sql3::ask(const string sql_command) {
    if (!run(sql_command)) {
-      throw "[ERROR] Unable to read database ";
+      throw string("[ERROR] Unable to read database ");
       //return {};
    }
    else {
@@ -72,7 +72,7 @@ string sql3::ask(const string sql_command) {
 
 map<string, vector<string>> sql3::query(const string sql_command) {
    if (!run(sql_command)) {
-      throw "[ERROR] Unable to read database ";
+      throw string("[ERROR] Unable to read database ");
       //return {};
    }
    else {
@@ -104,7 +104,7 @@ void sql3::mapit() {
 
 sql3::~sql3() {
    if(close()) {
-      throw "[ERROR] Unable to close database ";
+      throw string("[ERROR] Unable to close database ");
    }
 }
 
@@ -117,6 +117,7 @@ static int callback(void* data, int argc, char** argv, char** azColName) {
    int i;
    fprintf(stderr, "%s: ", (const char*)data);
    char res[1000];
+   responseDatabase.clear();
    for (i = 0; i < argc; i++) {
       sprintf(res, "%s = %s", azColName[i], argv[i] ? argv[i] : "NULL");
       responseDatabase += res;

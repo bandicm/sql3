@@ -22,7 +22,6 @@ class sql3 {
     sqlite3* db;
     string path;
     bool keepOpen;
-    // map<string, vector<string>> model;
     string Answer;
     map<string, vector<string>> parsed;
     
