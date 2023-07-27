@@ -8,12 +8,17 @@ int main() {
 
     sql3 mydb("../example/example.db", false);
 
-    //cout << mydb.ask("Select * from Tab1");
+    // cout << mydb.ask("Select * from Tab1");
     // cout << mydb.ask("INSERT INTO Tab1 VALUES(3,'Pakora', 'marijanab@bitelex.ml');");
 
     auto res = mydb.query("Select * from Tab1");
 
-    cout << endl <<  res["NAME"][0];
+    for (auto i : res) 
+        for (auto j: i.second)
+            cout << i.first << " : " << j << endl;
+    
+
+    // cout << endl <<  res["NAME"][1];
 
     return 0;
 }
