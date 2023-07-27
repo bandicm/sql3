@@ -43,6 +43,7 @@ bool sql3::run(const string sql_command) {
    }
    else  {
       Answer = responseDatabase;
+      responseDatabase.clear();
    }
 
    if (!keepOpen) {
@@ -115,13 +116,11 @@ sql3::~sql3() {
 
 static int callback(void* data, int argc, char** argv, char** azColName) {
    int i;
-   fprintf(stderr, "%s: ", (const char*)data);
+   // fprintf(stderr, "%s: ", (const char*)data); // ovo je ispisivalo čudne stringove toplo se nadam da nam ne treba
    char res[1000];
-   responseDatabase.clear();
    for (i = 0; i < argc; i++) {
       sprintf(res, "%s = %s", azColName[i], argv[i] ? argv[i] : "NULL");
-      responseDatabase += res;
-      responseDatabase += '\n';
+      responseDatabase += string(res) + string("\n");
    }
    return 0;
 }
