@@ -54,8 +54,6 @@ map<string, vector<string>> sql3::query(const string sql_command) {
 
    map<string, vector<string>> _parsed;
 
-   cout << Answer << endl;
-
    if (!r) {
       io.unlock();
       throw string("[ERROR] Unable to read database ");
