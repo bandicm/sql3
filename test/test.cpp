@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     try {
 
-    sql3 mydb("../example/example_copy.db", false);
+    sql3 mydb("../example/example.db", false);
 
     // cout << mydb.ask("Select * from Tab1");
     // cout << mydb.ask("INSERT INTO Tab1 VALUES(3,'Pakora', 'marijanab@bitelex.ml');");
