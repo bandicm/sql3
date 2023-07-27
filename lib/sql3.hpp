@@ -10,6 +10,7 @@
 #include <map>
 // #include <algorithm>
 #include <iostream>
+#include <mutex>
 
 using namespace std;
 
@@ -24,15 +25,13 @@ class sql3 {
     bool keepOpen;
     string Answer;
     map<string, vector<string>> parsed;
+    mutex io;
     
     sql3(const string path, bool _keepOpen = false);
     bool open();
     bool close();
-    bool run(const string sql_command);
-    string answer();
     void mapit();
 
-    string ask(const string sql_command);
     map<string, vector<string>> query(const string sql_command);
     
     ~sql3();
