@@ -23,10 +23,11 @@ bool sql3::close() {
    return operationStatus != SQLITE_OK;
 }
 
-bool sql3::run(const string sql_command) {
-
+map<string, vector<string>> sql3::query(const string sql_command) {
+   io.lock();
    if (!keepOpen) {
       if (open()) {
+         io.unlock();
          throw string("[ERROR] Unable to open database ");
       }
    }
@@ -37,7 +38,6 @@ bool sql3::run(const string sql_command) {
    exec_stuts = sqlite3_exec(db, sql_command.c_str(), callback, NULL, &messaggeError);
 
    if (exec_stuts != SQLITE_OK) {
-      // printf("[ERROR] Ne mogu čitati bazu podataka!");
       sqlite3_free(messaggeError);
       r = false;
    }
@@ -48,40 +48,25 @@ bool sql3::run(const string sql_command) {
 
    if (!keepOpen) {
       if(close()) {
+         io.unlock();
          throw string("[ERROR] Unable to close database ");
       }
    }
 
-   return r;
-}
+   map<string, vector<string>> _parsed;
 
-string sql3::answer() {
-   string _Answer = Answer;
-   Answer.clear();
-   return _Answer;
-}
-
-string sql3::ask(const string sql_command) {
-   if (!run(sql_command)) {
+   if (!r) {
+      io.unlock();
       throw string("[ERROR] Unable to read database ");
-      //return {};
    }
-   else {
-      return answer();
-   }
-}
 
-map<string, vector<string>> sql3::query(const string sql_command) {
-   if (!run(sql_command)) {
-      throw string("[ERROR] Unable to read database ");
-      //return {};
-   }
    else {
       mapit();
-      map<string, vector<string>> _parsed = parsed;
+      _parsed = parsed;
       parsed.clear();
-      return _parsed;
    }
+   io.unlock();
+   return _parsed;
 }
 
 void sql3::mapit() {
